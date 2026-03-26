@@ -1,14 +1,19 @@
-import { motion } from 'motion/react';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { PolicyCard } from '../components/PolicyCard';
+import { AddInsuranceModal } from '../components/AddInsuranceModal';
 import { POLICIES, USER_MOCK } from '../constants';
 import { Policy } from '../types';
-import { Bell, Menu, Coins, ChevronRight, Sparkles, Heart } from 'lucide-react';
+import { Bell, Menu, Coins, ChevronRight, Sparkles, Plus } from 'lucide-react';
 
 interface HomeProps {
   onPolicyClick: (policy: Policy) => void;
 }
 
 export function Home({ onPolicyClick }: HomeProps) {
+  const [customPolicies, setCustomPolicies] = useState<Policy[]>([]);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const allPolicies = [...POLICIES, ...customPolicies];
   return (
     <div className="min-h-screen bg-yu-lime pb-32">
       <header className="p-4 pt-10 flex justify-between items-center bg-yu-lime">
@@ -94,7 +99,7 @@ export function Home({ onPolicyClick }: HomeProps) {
             </div>
           </div>
           <div className="flex flex-col -space-y-20 pb-10">
-            {POLICIES.map((policy, index) => (
+            {allPolicies.map((policy, index) => (
               <PolicyCard
                 key={policy.id}
                 policy={policy}
@@ -104,8 +109,28 @@ export function Home({ onPolicyClick }: HomeProps) {
               />
             ))}
           </div>
+
+          {/* Add Insurance Button */}
+          <button
+            onClick={() => setShowAddModal(true)}
+            className="w-full border-2 border-dashed border-gray-300 rounded-[32px] py-5 flex items-center justify-center gap-3 text-gray-400 font-bold hover:border-yu-pink hover:text-yu-pink transition-all mt-4"
+          >
+            <div className="bg-gray-100 rounded-full p-1">
+              <Plus className="w-5 h-5" />
+            </div>
+            Add Insurance
+          </button>
         </div>
       </div>
+
+      <AnimatePresence>
+        {showAddModal && (
+          <AddInsuranceModal
+            onClose={() => setShowAddModal(false)}
+            onAdd={(policy) => setCustomPolicies(prev => [...prev, policy])}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
