@@ -71,8 +71,8 @@ export function Claims({ onBack }: ClaimsProps) {
   };
 
   return (
-    <div className="h-screen bg-yu-lime flex flex-col overflow-hidden px-6">
-      <header className="pt-8 mb-4 flex items-center justify-between">
+    <div className="min-h-screen bg-yu-lime p-6 pb-32">
+      <header className="pt-12 mb-8 flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-black text-gray-900 uppercase tracking-tight">Make a Claim</h1>
           <p className="text-gray-500 font-bold">We're here to help you. 💙</p>
@@ -83,7 +83,7 @@ export function Claims({ onBack }: ClaimsProps) {
       </header>
 
       <div className="relative">
-        <div className="flex justify-between items-center mb-4 px-4">
+        <div className="flex justify-between items-center mb-8 px-4">
           {[1, 2, 3, 4].map((s) => (
             <div key={s} className="flex flex-col items-center gap-2">
               <div className={cn(
@@ -109,7 +109,6 @@ export function Claims({ onBack }: ClaimsProps) {
           </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto pb-6">
         <AnimatePresence mode="wait">
           {step === 1 && (
             <motion.div
@@ -302,7 +301,6 @@ export function Claims({ onBack }: ClaimsProps) {
             </motion.div>
           )}
         </AnimatePresence>
-        </div>
       </div>
     </div>
   );
