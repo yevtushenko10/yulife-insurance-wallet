@@ -71,12 +71,17 @@ export function AddInsuranceModal({ onClose, onAdd }: AddInsuranceModalProps) {
       const pdfText = await extractPdfText(uploadedFile);
 
       setStatus('analyzing');
-      const res = await fetch('/.netlify/functions/analyze-policy', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ pdfText, policyName: insuranceName.trim() }),
-      });
-      const data = await res.json();
+      let data: any = {};
+      try {
+        const res = await fetch('/.netlify/functions/analyze-policy', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ pdfText, policyName: insuranceName.trim() }),
+        });
+        if (res.ok) data = await res.json();
+      } catch {
+        // fallback: create card without AI summary
+      }
 
       const newPolicy: Policy = {
         id: `custom-${Date.now()}`,

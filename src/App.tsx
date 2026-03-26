@@ -14,6 +14,7 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('home');
   const [selectedPolicy, setSelectedPolicy] = useState<Policy | null>(null);
   const [showSplash, setShowSplash] = useState(true);
+  const [customPolicies, setCustomPolicies] = useState<Policy[]>([]);
 
   useEffect(() => {
     const timer = setTimeout(() => setShowSplash(false), 2500);
@@ -28,9 +29,9 @@ export default function App() {
   const renderScreen = () => {
     switch (activeTab) {
       case 'home':
-        return <Home onPolicyClick={setSelectedPolicy} />;
+        return <Home onPolicyClick={setSelectedPolicy} customPolicies={customPolicies} onCustomPoliciesChange={setCustomPolicies} />;
       case 'claims':
-        return <Claims onBack={() => setActiveTab('home')} />;
+        return <Claims onBack={() => setActiveTab('home')} customPolicies={customPolicies} />;
       case 'chat':
         return <Chat />;
       case 'profile':

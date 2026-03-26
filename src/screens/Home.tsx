@@ -8,10 +8,11 @@ import { Bell, Menu, Coins, ChevronRight, Sparkles, Plus } from 'lucide-react';
 
 interface HomeProps {
   onPolicyClick: (policy: Policy) => void;
+  customPolicies: Policy[];
+  onCustomPoliciesChange: (policies: Policy[]) => void;
 }
 
-export function Home({ onPolicyClick }: HomeProps) {
-  const [customPolicies, setCustomPolicies] = useState<Policy[]>([]);
+export function Home({ onPolicyClick, customPolicies, onCustomPoliciesChange }: HomeProps) {
   const [showAddModal, setShowAddModal] = useState(false);
   const allPolicies = [...POLICIES, ...customPolicies];
   return (
@@ -106,7 +107,7 @@ export function Home({ onPolicyClick }: HomeProps) {
                 index={index}
                 onClick={() => onPolicyClick(policy)}
                 isStacked={true}
-                onDelete={policy.id.startsWith('custom-') ? () => setCustomPolicies(prev => prev.filter(p => p.id !== policy.id)) : undefined}
+                onDelete={policy.id.startsWith('custom-') ? () => onCustomPoliciesChange(customPolicies.filter(p => p.id !== policy.id)) : undefined}
               />
             ))}
           </div>
@@ -128,7 +129,7 @@ export function Home({ onPolicyClick }: HomeProps) {
         {showAddModal && (
           <AddInsuranceModal
             onClose={() => setShowAddModal(false)}
-            onAdd={(policy) => setCustomPolicies(prev => [...prev, policy])}
+            onAdd={(policy) => onCustomPoliciesChange([...customPolicies, policy])}
           />
         )}
       </AnimatePresence>

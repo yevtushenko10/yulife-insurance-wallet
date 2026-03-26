@@ -4,12 +4,15 @@ import { POLICIES } from '../constants';
 import { Policy } from '../types';
 import { ChevronRight, Upload, CheckCircle2, AlertCircle, ArrowLeft, Loader2, FileText, X } from 'lucide-react';
 import { cn } from '../lib/utils';
+import * as Icons from 'lucide-react';
 
 interface ClaimsProps {
   onBack: () => void;
+  customPolicies?: Policy[];
 }
 
-export function Claims({ onBack }: ClaimsProps) {
+export function Claims({ onBack, customPolicies = [] }: ClaimsProps) {
+  const allPolicies = [...POLICIES, ...customPolicies];
   const [step, setStep] = useState(1);
   const [selectedPolicy, setSelectedPolicy] = useState<Policy | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -120,30 +123,33 @@ export function Claims({ onBack }: ClaimsProps) {
             >
               <h2 className="text-xl font-black text-gray-900 uppercase tracking-tight">Which policy?</h2>
               <div className="grid gap-2">
-                {POLICIES.map((policy) => (
-                  <button
-                    key={policy.id}
-                    onClick={() => {
-                      setSelectedPolicy(policy);
-                      handleNext();
-                    }}
-                    className={cn(
-                      "flex items-center justify-between p-3 rounded-[32px] bg-white shadow-sm border border-gray-100 text-left hover:border-yu-pink/20 transition-all",
-                      selectedPolicy?.id === policy.id && "border-yu-pink bg-yu-pink/5"
-                    )}
-                  >
-                    <div className="flex items-center gap-4">
-                      <div className={cn("w-10 h-10 rounded-2xl flex items-center justify-center text-white bg-gradient-to-br shadow-lg", policy.color)}>
-                        <AlertCircle className="w-5 h-5" />
+                {allPolicies.map((policy) => {
+                  const Icon = (Icons as any)[policy.icon] || AlertCircle;
+                  return (
+                    <button
+                      key={policy.id}
+                      onClick={() => {
+                        setSelectedPolicy(policy);
+                        handleNext();
+                      }}
+                      className={cn(
+                        "flex items-center justify-between p-3 rounded-[32px] bg-white shadow-sm border border-gray-100 text-left hover:border-yu-pink/20 transition-all",
+                        selectedPolicy?.id === policy.id && "border-yu-pink bg-yu-pink/5"
+                      )}
+                    >
+                      <div className="flex items-center gap-4">
+                        <div className={cn("w-10 h-10 rounded-2xl flex items-center justify-center text-white bg-gradient-to-br shadow-lg", policy.color)}>
+                          <Icon className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <h3 className="font-black text-gray-900 text-lg leading-tight">{policy.title}</h3>
+                          <p className="text-xs text-gray-500 font-bold uppercase tracking-widest mt-1 opacity-70">{policy.coverage}</p>
+                        </div>
                       </div>
-                      <div>
-                        <h3 className="font-black text-gray-900 text-lg leading-tight">{policy.title}</h3>
-                        <p className="text-xs text-gray-500 font-bold uppercase tracking-widest mt-1 opacity-70">{policy.coverage}</p>
-                      </div>
-                    </div>
-                    <ChevronRight className="w-6 h-6 text-gray-400" />
-                  </button>
-                ))}
+                      <ChevronRight className="w-6 h-6 text-gray-400" />
+                    </button>
+                  );
+                })}
               </div>
             </motion.div>
           )}
