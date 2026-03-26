@@ -11,6 +11,7 @@ export interface Policy {
   color: string;
   icon: string;
   pointsReward: number;
+  pdfUrl?: string;
 }
 
 export interface User {

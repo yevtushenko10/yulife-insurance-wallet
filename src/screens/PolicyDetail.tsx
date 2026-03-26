@@ -93,20 +93,20 @@ export function PolicyDetail({ policy, onBack, onClaim }: PolicyDetailProps) {
             </div>
             <div className="flex gap-3">
               <a
-                href="/yulife-policy-full-terms.pdf"
+                href={policy.pdfUrl || "/yulife-policy-full-terms.pdf"}
                 target="_blank"
                 rel="noopener noreferrer"
-                download="yulife-policy-full-terms.pdf"
+                download={policy.pdfUrl ? `${policy.title}.pdf` : "yulife-policy-full-terms.pdf"}
                 className="flex-1 bg-gray-50 p-4 rounded-3xl text-center hover:bg-gray-100 transition-colors border border-gray-100"
               >
                 <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Policy</p>
                 <p className="text-sm font-black text-gray-700">Full Terms</p>
               </a>
               <a
-                href="/yulife-ipid-key-facts.pdf"
+                href={policy.pdfUrl || "/yulife-ipid-key-facts.pdf"}
                 target="_blank"
                 rel="noopener noreferrer"
-                download="yulife-ipid-key-facts.pdf"
+                download={policy.pdfUrl ? `${policy.title}.pdf` : "yulife-ipid-key-facts.pdf"}
                 className="flex-1 bg-gray-50 p-4 rounded-3xl text-center hover:bg-gray-100 transition-colors border border-gray-100"
               >
                 <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">IPID</p>

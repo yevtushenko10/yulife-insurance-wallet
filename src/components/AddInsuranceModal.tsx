@@ -83,6 +83,8 @@ export function AddInsuranceModal({ onClose, onAdd }: AddInsuranceModalProps) {
         // fallback: create card without AI summary
       }
 
+      const pdfUrl = URL.createObjectURL(uploadedFile);
+
       const newPolicy: Policy = {
         id: `custom-${Date.now()}`,
         title: insuranceName.trim(),
@@ -94,6 +96,7 @@ export function AddInsuranceModal({ onClose, onAdd }: AddInsuranceModalProps) {
         color: selectedType.color,
         icon: selectedType.iconName,
         pointsReward: 0,
+        pdfUrl,
       };
 
       setStatus('done');
