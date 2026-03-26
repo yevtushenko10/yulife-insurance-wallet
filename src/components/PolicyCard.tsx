@@ -41,7 +41,10 @@ export function PolicyCard({ policy, index, onClick, isStacked = false }: Policy
               <span className="text-white text-[10px] font-black uppercase tracking-widest opacity-70 block mb-0.5">
                 {policy.type} PASS
               </span>
-              <h3 className="text-xl font-black text-white leading-tight uppercase tracking-tight">
+              <h3 className={cn(
+                "font-black text-white leading-tight uppercase tracking-tight",
+                policy.title.length > 12 ? "text-base" : "text-xl"
+              )}>
                 {policy.title}
               </h3>
             </div>
