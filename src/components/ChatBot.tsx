@@ -46,11 +46,12 @@ export function ChatBot() {
         body: JSON.stringify({ message: input }),
       });
       const data = await res.json();
+      console.log('Gemini response:', res.status, data);
 
       const assistantMsg: ChatMessage = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        text: data.text || "I'm sorry, I couldn't process that. Let's try again! 💙",
+        text: data.text || data.error || "I'm sorry, I couldn't process that. Let's try again! 💙",
         timestamp: new Date()
       };
 
