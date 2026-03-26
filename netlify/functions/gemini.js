@@ -1,16 +1,15 @@
-import { GoogleGenAI } from '@google/genai';
-
 const SYSTEM_INSTRUCTION = `You are a friendly, supportive insurance assistant for YuLife — a gamified insurance and wellbeing app.
 Your role is to help users understand their policies, guide them through claims, and answer wellbeing questions.
 Keep responses concise, warm, and encouraging. Use simple language — avoid jargon.
 If asked about specific claim statuses or account details, let the user know they can contact support directly.`;
 
-export const handler = async (event) => {
+exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method Not Allowed' };
   }
 
   try {
+    const { GoogleGenAI } = await import('@google/genai');
     const { message } = JSON.parse(event.body);
 
     if (!message) {
