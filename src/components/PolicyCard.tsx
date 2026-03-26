@@ -2,16 +2,17 @@ import { motion } from 'motion/react';
 import { Policy } from '../types';
 import { cn } from '../lib/utils';
 import * as Icons from 'lucide-react';
-import { ChevronRight } from 'lucide-react';
+import { X } from 'lucide-react';
 
 interface PolicyCardProps {
   policy: Policy;
   index: number;
   onClick: () => void;
   isStacked?: boolean;
+  onDelete?: () => void;
 }
 
-export function PolicyCard({ policy, index, onClick, isStacked = false }: PolicyCardProps) {
+export function PolicyCard({ policy, index, onClick, isStacked = false, onDelete }: PolicyCardProps) {
   const Icon = (Icons as any)[policy.icon] || Icons.Shield;
 
   return (
@@ -46,10 +47,20 @@ export function PolicyCard({ policy, index, onClick, isStacked = false }: Policy
               </h3>
             </div>
           </div>
-          <div className="bg-white/20 px-3 py-1 rounded-full backdrop-blur-md border border-white/10">
-            <span className="text-[10px] font-black text-white uppercase tracking-widest">
-              {policy.status}
-            </span>
+          <div className="flex items-center gap-2">
+            <div className="bg-white/20 px-3 py-1 rounded-full backdrop-blur-md border border-white/10">
+              <span className="text-[10px] font-black text-white uppercase tracking-widest">
+                {policy.status}
+              </span>
+            </div>
+            {onDelete && (
+              <button
+                onClick={e => { e.stopPropagation(); onDelete(); }}
+                className="bg-white/20 p-1.5 rounded-full backdrop-blur-md border border-white/10 hover:bg-red-500/50 transition-colors"
+              >
+                <X className="w-3.5 h-3.5 text-white" />
+              </button>
+            )}
           </div>
         </div>
 

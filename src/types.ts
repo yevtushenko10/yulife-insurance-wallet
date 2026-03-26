@@ -1,4 +1,4 @@
-export type PolicyType = 'Health' | 'Life' | 'Income Protection' | 'Dental';
+export type PolicyType = string;
 
 export interface Policy {
   id: string;

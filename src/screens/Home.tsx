@@ -106,6 +106,7 @@ export function Home({ onPolicyClick }: HomeProps) {
                 index={index}
                 onClick={() => onPolicyClick(policy)}
                 isStacked={true}
+                onDelete={policy.id.startsWith('custom-') ? () => setCustomPolicies(prev => prev.filter(p => p.id !== policy.id)) : undefined}
               />
             ))}
           </div>
