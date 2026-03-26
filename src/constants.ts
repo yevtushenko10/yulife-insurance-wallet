@@ -62,7 +62,7 @@ export const POLICIES: Policy[] = [
     id: '4',
     title: 'Income Protection',
     type: 'Income Protection',
-    status: 'Pending',
+    status: 'Active',
     coverage: '75% of salary',
     benefits: [
       'Monthly payments if unable to work',
