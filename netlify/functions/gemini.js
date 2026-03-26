@@ -28,6 +28,17 @@ exports.handler = async (event) => {
     });
 
     const data = await res.json();
+    console.log('Gemini raw response:', JSON.stringify(data));
+
+    if (!res.ok || data.error) {
+      console.error('Gemini API error:', data.error);
+      return {
+        statusCode: 200,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: `API error: ${data.error?.message || res.status}` }),
+      };
+    }
+
     const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
 
     return {
