@@ -19,7 +19,7 @@ exports.handler = async (event) => {
     const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
     const response = await ai.models.generateContent({
-      model: 'gemini-2.0-flash-lite',
+      model: 'gemini-1.5-flash',
       contents: message,
       config: { systemInstruction: SYSTEM_INSTRUCTION },
     });
