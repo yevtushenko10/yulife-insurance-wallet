@@ -9,9 +9,23 @@
 }
 
 @layer base {
-  body {
+  html, body {
     @apply bg-yu-lime text-gray-900 antialiased;
     font-family: var(--font-sans);
+    overflow-x: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar {
+    display: none;
+  }
+  * {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  *::-webkit-scrollbar {
+    display: none;
   }
 }
 

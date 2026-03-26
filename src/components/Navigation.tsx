@@ -26,10 +26,12 @@ export function Navigation({ activeTab, setActiveTab }: NavigationProps) {
           return (
             <button
               key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
+              onClick={() => tab.id === 'home' ? setActiveTab(tab.id) : undefined}
+              disabled={tab.id !== 'home'}
               className={cn(
                 "flex flex-col items-center gap-1 transition-all duration-300 min-w-[64px]",
-                isActive ? "text-yu-pink" : "text-gray-400"
+                isActive ? "text-yu-pink" : "text-gray-300",
+                tab.id !== 'home' && "cursor-default opacity-50"
               )}
             >
               <div className={cn(
