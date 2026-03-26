@@ -71,8 +71,8 @@ export function Claims({ onBack }: ClaimsProps) {
   };
 
   return (
-    <div className="min-h-screen bg-yu-lime p-6 pb-32">
-      <header className="pt-12 mb-8 flex items-center justify-between">
+    <div className="h-screen bg-yu-lime flex flex-col overflow-hidden px-6">
+      <header className="pt-8 mb-4 flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-black text-gray-900 uppercase tracking-tight">Make a Claim</h1>
           <p className="text-gray-500 font-bold">We're here to help you. 💙</p>
@@ -83,7 +83,7 @@ export function Claims({ onBack }: ClaimsProps) {
       </header>
 
       <div className="relative">
-        <div className="flex justify-between items-center mb-8 px-4">
+        <div className="flex justify-between items-center mb-4 px-4">
           {[1, 2, 3, 4].map((s) => (
             <div key={s} className="flex flex-col items-center gap-2">
               <div className={cn(
@@ -109,6 +109,7 @@ export function Claims({ onBack }: ClaimsProps) {
           </div>
         </div>
 
+        <div className="flex-1 overflow-y-auto pb-6">
         <AnimatePresence mode="wait">
           {step === 1 && (
             <motion.div
@@ -116,10 +117,10 @@ export function Claims({ onBack }: ClaimsProps) {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
-              className="space-y-4"
+              className="space-y-2"
             >
               <h2 className="text-xl font-black text-gray-900 uppercase tracking-tight">Which policy?</h2>
-              <div className="grid gap-4">
+              <div className="grid gap-2">
                 {POLICIES.map((policy) => (
                   <button
                     key={policy.id}
@@ -128,13 +129,13 @@ export function Claims({ onBack }: ClaimsProps) {
                       handleNext();
                     }}
                     className={cn(
-                      "flex items-center justify-between p-6 rounded-[32px] bg-white shadow-sm border border-gray-100 text-left hover:border-yu-pink/20 transition-all",
+                      "flex items-center justify-between p-3 rounded-[32px] bg-white shadow-sm border border-gray-100 text-left hover:border-yu-pink/20 transition-all",
                       selectedPolicy?.id === policy.id && "border-yu-pink bg-yu-pink/5"
                     )}
                   >
                     <div className="flex items-center gap-4">
-                      <div className={cn("w-14 h-14 rounded-2xl flex items-center justify-center text-white bg-gradient-to-br shadow-lg", policy.color)}>
-                        <AlertCircle className="w-7 h-7" />
+                      <div className={cn("w-10 h-10 rounded-2xl flex items-center justify-center text-white bg-gradient-to-br shadow-lg", policy.color)}>
+                        <AlertCircle className="w-5 h-5" />
                       </div>
                       <div>
                         <h3 className="font-black text-gray-900 text-lg leading-tight">{policy.title}</h3>
@@ -301,6 +302,7 @@ export function Claims({ onBack }: ClaimsProps) {
             </motion.div>
           )}
         </AnimatePresence>
+        </div>
       </div>
     </div>
   );
