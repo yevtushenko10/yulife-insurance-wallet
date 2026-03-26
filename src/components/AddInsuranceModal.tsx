@@ -3,8 +3,9 @@ import { motion } from 'motion/react';
 import { X, Upload, FileText, Loader2, Sparkles, Car, Home, Plane, PawPrint, Shield, HeartPulse, Smile, Briefcase } from 'lucide-react';
 import { Policy } from '../types';
 import * as pdfjsLib from 'pdfjs-dist';
+import workerSrc from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 
-pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.mjs`;
+pdfjsLib.GlobalWorkerOptions.workerSrc = workerSrc;
 
 const CUSTOM_COLORS = [
   'from-red-500 to-rose-600',
