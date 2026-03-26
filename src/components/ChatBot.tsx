@@ -46,7 +46,6 @@ export function ChatBot() {
         body: JSON.stringify({ message: input }),
       });
       const data = await res.json();
-      console.log('Gemini response:', res.status, data);
 
       const assistantMsg: ChatMessage = {
         id: (Date.now() + 1).toString(),
