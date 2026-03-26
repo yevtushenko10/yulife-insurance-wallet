@@ -9,37 +9,31 @@ exports.handler = async (event) => {
   }
 
   try {
+    const { GoogleGenAI } = await import('@google/genai');
     const { message } = JSON.parse(event.body);
 
     if (!message) {
       return { statusCode: 400, body: JSON.stringify({ error: 'Missing message' }) };
     }
 
-    const apiKey = process.env.GEMINI_API_KEY;
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=${apiKey}`;
+    const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        system_instruction: { parts: [{ text: SYSTEM_INSTRUCTION }] },
-        contents: [{ parts: [{ text: message }] }],
-      }),
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.0-flash-lite',
+      contents: message,
+      config: { systemInstruction: SYSTEM_INSTRUCTION },
     });
-
-    const data = await res.json();
-    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
 
     return {
       statusCode: 200,
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text: text || "I'm sorry, I couldn't process that. Let's try again! 💙" }),
+      body: JSON.stringify({ text: response.text }),
     };
   } catch (err) {
-    console.error('Gemini error:', err);
+    console.error('Gemini error:', err.message);
     return {
-      statusCode: 500,
-      body: JSON.stringify({ error: 'Something went wrong. Please try again.' }),
+      statusCode: 200,
+      body: JSON.stringify({ text: `Error: ${err.message}` }),
     };
   }
 };
