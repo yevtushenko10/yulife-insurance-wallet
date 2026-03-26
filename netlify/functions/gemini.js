@@ -9,25 +9,31 @@ exports.handler = async (event) => {
   }
 
   try {
-    const { GoogleGenAI } = await import('@google/genai');
     const { message } = JSON.parse(event.body);
 
     if (!message) {
       return { statusCode: 400, body: JSON.stringify({ error: 'Missing message' }) };
     }
 
-    const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+    const apiKey = process.env.GEMINI_API_KEY;
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.0-flash',
-      contents: message,
-      config: { systemInstruction: SYSTEM_INSTRUCTION },
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        system_instruction: { parts: [{ text: SYSTEM_INSTRUCTION }] },
+        contents: [{ parts: [{ text: message }] }],
+      }),
     });
+
+    const data = await res.json();
+    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
 
     return {
       statusCode: 200,
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text: response.text }),
+      body: JSON.stringify({ text: text || "I'm sorry, I couldn't process that. Let's try again! 💙" }),
     };
   } catch (err) {
     console.error('Gemini error:', err);
