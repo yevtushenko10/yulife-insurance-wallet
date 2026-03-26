@@ -49,7 +49,7 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      <Navigation activeTab={activeTab} setActiveTab={setActiveTab} />
+      <Navigation activeTab="home" setActiveTab={setActiveTab} />
     </div>
   );
 }

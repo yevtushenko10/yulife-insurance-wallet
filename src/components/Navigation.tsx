@@ -30,8 +30,8 @@ export function Navigation({ activeTab, setActiveTab }: NavigationProps) {
               disabled={tab.id !== 'home'}
               className={cn(
                 "flex flex-col items-center gap-1 transition-all duration-300 min-w-[64px]",
-                isActive ? "text-yu-pink" : "text-gray-300",
-                tab.id !== 'home' && "cursor-default opacity-50"
+                tab.id === 'home' ? "text-yu-pink" : "text-gray-400",
+                tab.id !== 'home' && "cursor-default"
               )}
             >
               <div className={cn(
