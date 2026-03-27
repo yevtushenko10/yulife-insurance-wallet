@@ -3,9 +3,8 @@ import { motion } from 'motion/react';
 import { X, Upload, FileText, Loader2, Sparkles, Car, Home, Plane, PawPrint, Shield, HeartPulse, Smile, Briefcase } from 'lucide-react';
 import { Policy } from '../types';
 import * as pdfjsLib from 'pdfjs-dist';
-import workerSrc from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 
-pdfjsLib.GlobalWorkerOptions.workerSrc = workerSrc;
+pdfjsLib.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.mjs`;
 
 const CUSTOM_COLORS = [
   'from-red-500 to-rose-600',
@@ -87,12 +86,17 @@ export function AddInsuranceModal({ onClose, onAdd }: AddInsuranceModalProps) {
       const pdfUrl = URL.createObjectURL(uploadedFile);
 
       const name = insuranceName.trim() || `${selectedType.label} Insurance`;
+      // Use short coverage for list views, full summary stored in coverage
+      const shortCoverage = data.summary
+        ? data.summary.split('.')[0].substring(0, 50)
+        : selectedType.label;
       const newPolicy: Policy = {
         id: `custom-${Date.now()}`,
         title: name,
         type: selectedType.id,
         status: 'Active',
         coverage: data.summary || `${name} policy`,
+        shortCoverage,
         benefits: data.benefits || ['See your uploaded policy document'],
         exclusions: data.exclusions || [],
         color: selectedType.color,

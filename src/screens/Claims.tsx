@@ -143,7 +143,7 @@ export function Claims({ onBack, customPolicies = [] }: ClaimsProps) {
                         </div>
                         <div>
                           <h3 className="font-black text-gray-900 text-lg leading-tight">{policy.title}</h3>
-                          <p className="text-xs text-gray-500 font-bold uppercase tracking-widest mt-1 opacity-70">{policy.coverage}</p>
+                          <p className="text-xs text-gray-500 font-bold uppercase tracking-widest mt-1 opacity-70 truncate max-w-[200px]">{policy.shortCoverage || policy.coverage}</p>
                         </div>
                       </div>
                       <ChevronRight className="w-6 h-6 text-gray-400" />

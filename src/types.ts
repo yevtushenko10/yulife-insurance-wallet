@@ -13,6 +13,7 @@ export interface Policy {
   pointsReward: number;
   pdfUrl?: string;
   provider?: string;
+  shortCoverage?: string;
 }
 
 export interface User {
