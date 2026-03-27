@@ -58,7 +58,11 @@ export function PolicyDetail({ policy, onBack, onClaim }: PolicyDetailProps) {
             </div>
             <div>
               <p className="text-[10px] font-black text-teal-600 uppercase tracking-widest">AI Summary</p>
-              <p className="text-sm text-gray-700 font-medium">This policy covers your {policy.type.toLowerCase()} needs with up to {policy.coverage} in benefits. 💙</p>
+              <p className="text-sm text-gray-700 font-medium">
+                {policy.pdfUrl
+                  ? policy.coverage
+                  : `This policy covers your ${policy.type.toLowerCase()} needs with up to ${policy.coverage} in benefits. 💙`}
+              </p>
             </div>
           </div>
 

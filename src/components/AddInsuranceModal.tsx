@@ -77,11 +77,11 @@ export function AddInsuranceModal({ onClose, onAdd }: AddInsuranceModalProps) {
         const res = await fetch('/.netlify/functions/analyze-policy', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ pdfText, policyName: insuranceName.trim() }),
+          body: JSON.stringify({ pdfText, policyName: provider.trim() || insuranceName.trim() }),
         });
         if (res.ok) data = await res.json();
       } catch {
-        // fallback: create card without AI summary
+        // fallback when running locally without netlify dev
       }
 
       const pdfUrl = URL.createObjectURL(uploadedFile);
