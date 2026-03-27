@@ -24,11 +24,13 @@
     scrollbar-width: none;
     -ms-overflow-style: none;
     -webkit-tap-highlight-color: transparent;
-  }
-  img, button, a, [role="button"] {
     -webkit-user-select: none;
     user-select: none;
     -webkit-touch-callout: none;
+  }
+  input, textarea {
+    -webkit-user-select: text;
+    user-select: text;
   }
   *::-webkit-scrollbar {
     display: none;
