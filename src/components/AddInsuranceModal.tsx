@@ -2,10 +2,6 @@ import { useState, useRef } from 'react';
 import { motion } from 'motion/react';
 import { X, Upload, FileText, Loader2, Sparkles, Car, Home, Plane, PawPrint, Shield, HeartPulse, Smile, Briefcase } from 'lucide-react';
 import { Policy } from '../types';
-import * as pdfjsLib from 'pdfjs-dist';
-
-pdfjsLib.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.mjs`;
-
 const CUSTOM_COLORS = [
   'from-red-500 to-rose-600',
   'from-amber-400 to-yellow-500',
@@ -28,16 +24,16 @@ const INSURANCE_TYPES = [
   { id: 'Other',    label: 'Other',    icon: Shield,     iconName: 'Shield',     color: 'from-pink-500 to-fuchsia-600' },
 ];
 
-async function extractPdfText(file: File): Promise<string> {
-  const arrayBuffer = await file.arrayBuffer();
-  const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-  let text = '';
-  for (let i = 1; i <= Math.min(pdf.numPages, 15); i++) {
-    const page = await pdf.getPage(i);
-    const content = await page.getTextContent();
-    text += content.items.map((item: any) => item.str).join(' ') + '\n';
-  }
-  return text;
+function fileToBase64(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = reader.result as string;
+      resolve(result.split(',')[1]); // strip data:...;base64, prefix
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
 }
 
 interface AddInsuranceModalProps {
@@ -68,7 +64,7 @@ export function AddInsuranceModal({ onClose, onAdd }: AddInsuranceModalProps) {
 
     try {
       setStatus('extracting');
-      const pdfText = await extractPdfText(uploadedFile);
+      const base64 = await fileToBase64(uploadedFile);
 
       setStatus('analyzing');
       let data: any = {};
@@ -76,7 +72,7 @@ export function AddInsuranceModal({ onClose, onAdd }: AddInsuranceModalProps) {
         const res = await fetch('/.netlify/functions/analyze-policy', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ pdfText, policyName: provider.trim() || insuranceName.trim() }),
+          body: JSON.stringify({ base64, policyName: provider.trim() || insuranceName.trim() }),
         });
         if (res.ok) data = await res.json();
       } catch {
