@@ -40,6 +40,18 @@ export function PolicyDetail({ policy, onBack, onClaim }: PolicyDetailProps) {
 
       <div className="px-4 -mt-10">
         <div className="yu-card p-6 space-y-8">
+          {policy.provider && (
+            <div className="flex items-center justify-between p-4 bg-gray-50 rounded-3xl border border-gray-100">
+              <div>
+                <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Provider</p>
+                <p className="text-lg font-black text-gray-800">{policy.provider}</p>
+              </div>
+              <div className="bg-gray-200 w-12 h-12 rounded-2xl flex items-center justify-center">
+                <span className="text-gray-600 font-black text-sm">{policy.provider.slice(0,2).toUpperCase()}</span>
+              </div>
+            </div>
+          )}
+
           <div className="flex items-center gap-4 p-4 bg-teal-50 rounded-3xl border border-teal-100">
             <div className="bg-teal-500 p-2 rounded-2xl">
               <Sparkles className="w-5 h-5 text-white" />

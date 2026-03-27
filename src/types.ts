@@ -12,6 +12,7 @@ export interface Policy {
   icon: string;
   pointsReward: number;
   pdfUrl?: string;
+  provider?: string;
 }
 
 export interface User {

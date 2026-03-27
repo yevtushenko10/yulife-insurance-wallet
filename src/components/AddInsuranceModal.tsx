@@ -47,6 +47,7 @@ interface AddInsuranceModalProps {
 }
 
 export function AddInsuranceModal({ onClose, onAdd }: AddInsuranceModalProps) {
+  const [provider, setProvider] = useState('');
   const [insuranceName, setInsuranceName] = useState('');
   const [selectedType, setSelectedType] = useState(INSURANCE_TYPES[0]);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
@@ -85,18 +86,20 @@ export function AddInsuranceModal({ onClose, onAdd }: AddInsuranceModalProps) {
 
       const pdfUrl = URL.createObjectURL(uploadedFile);
 
+      const name = insuranceName.trim() || `${selectedType.label} Insurance`;
       const newPolicy: Policy = {
         id: `custom-${Date.now()}`,
-        title: insuranceName.trim(),
+        title: name,
         type: selectedType.id,
         status: 'Active',
-        coverage: data.summary || `${insuranceName.trim()} policy`,
+        coverage: data.summary || `${name} policy`,
         benefits: data.benefits || ['See your uploaded policy document'],
         exclusions: data.exclusions || [],
         color: selectedType.color,
         icon: selectedType.iconName,
         pointsReward: 0,
         pdfUrl,
+        provider: provider.trim() || undefined,
       };
 
       setStatus('done');
@@ -109,7 +112,7 @@ export function AddInsuranceModal({ onClose, onAdd }: AddInsuranceModalProps) {
   };
 
   const isLoading = status === 'extracting' || status === 'analyzing';
-  const canSubmit = !!uploadedFile && !!insuranceName.trim() && !isLoading;
+  const canSubmit = !!uploadedFile && !!provider.trim() && !isLoading;
 
   return (
     <motion.div
@@ -158,14 +161,26 @@ export function AddInsuranceModal({ onClose, onAdd }: AddInsuranceModalProps) {
           </div>
         </div>
 
-        {/* Insurance Name */}
+        {/* Provider / Company name */}
         <div>
-          <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Insurance Name *</p>
+          <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Insurance Company *</p>
+          <input
+            type="text"
+            value={provider}
+            onChange={e => setProvider(e.target.value)}
+            placeholder="e.g. Aviva, AXA, Allianz"
+            className="w-full border border-gray-200 rounded-2xl px-4 py-3 text-sm font-medium outline-none focus:border-yu-pink"
+          />
+        </div>
+
+        {/* Policy name */}
+        <div>
+          <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Policy Name (optional)</p>
           <input
             type="text"
             value={insuranceName}
             onChange={e => setInsuranceName(e.target.value)}
-            placeholder="e.g. Aviva Car Insurance"
+            placeholder={`${selectedType.label} Insurance`}
             className="w-full border border-gray-200 rounded-2xl px-4 py-3 text-sm font-medium outline-none focus:border-yu-pink"
           />
         </div>
