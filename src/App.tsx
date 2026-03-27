@@ -11,6 +11,7 @@ import { Profile } from './screens/Profile';
 import { Navigation } from './components/Navigation';
 import { SplashScreen } from './components/SplashScreen';
 import { Policy } from './types';
+import { POLICIES } from './constants';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('home');
@@ -102,6 +103,7 @@ export default function App() {
         {selectedPolicy && (
           <PolicyDetail
             policy={selectedPolicy}
+            allPolicies={[...POLICIES, ...customPolicies]}
             onBack={() => setSelectedPolicy(null)}
             onClaim={handleMakeClaim}
           />

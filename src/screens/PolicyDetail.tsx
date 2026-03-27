@@ -6,11 +6,12 @@ import { ChatBot } from '../components/ChatBot';
 
 interface PolicyDetailProps {
   policy: Policy;
+  allPolicies: Policy[];
   onBack: () => void;
   onClaim: () => void;
 }
 
-export function PolicyDetail({ policy, onBack, onClaim }: PolicyDetailProps) {
+export function PolicyDetail({ policy, allPolicies, onBack, onClaim }: PolicyDetailProps) {
   return (
     <motion.div
       initial={{ x: '100%' }}
@@ -141,7 +142,7 @@ export function PolicyDetail({ policy, onBack, onClaim }: PolicyDetailProps) {
       </div>
 
       {/* ChatBot is only available here when a policy is selected */}
-      <ChatBot />
+      <ChatBot policies={allPolicies} />
     </motion.div>
   );
 }

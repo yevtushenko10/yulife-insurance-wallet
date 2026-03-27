@@ -5,7 +5,13 @@ import { ChatMessage } from '../types';
 import Markdown from 'react-markdown';
 import { cn } from '../lib/utils';
 
-export function ChatBot() {
+import { Policy } from '../types';
+
+interface ChatBotProps {
+  policies?: Policy[];
+}
+
+export function ChatBot({ policies = [] }: ChatBotProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
@@ -43,7 +49,7 @@ export function ChatBot() {
       const res = await fetch('/.netlify/functions/gemini', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: input }),
+        body: JSON.stringify({ message: input, policies }),
       });
       const data = await res.json();
 
