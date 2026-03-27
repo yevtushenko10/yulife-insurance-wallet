@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
-import { onAuthStateChanged, User } from 'firebase/auth';
+import { signInAnonymously, onAuthStateChanged, User } from 'firebase/auth';
 import { auth } from './lib/firebase';
 import { loadPolicies, savePolicy, deletePolicy } from './lib/firestore';
 import { Home } from './screens/Home';
@@ -10,7 +10,6 @@ import { Chat } from './screens/Chat';
 import { Profile } from './screens/Profile';
 import { Navigation } from './components/Navigation';
 import { SplashScreen } from './components/SplashScreen';
-import { AuthButton } from './components/AuthButton';
 import { Policy } from './types';
 
 export default function App() {
@@ -20,21 +19,20 @@ export default function App() {
   const [customPolicies, setCustomPolicies] = useState<Policy[]>([]);
   const [user, setUser] = useState<User | null>(null);
 
-  // Splash timer
   useEffect(() => {
     const timer = setTimeout(() => setShowSplash(false), 2500);
     return () => clearTimeout(timer);
   }, []);
 
-  // Auth listener + load policies from Firestore when signed in
+  // Auto sign-in anonymously + load policies
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, async (u) => {
-      setUser(u);
       if (u) {
+        setUser(u);
         const saved = await loadPolicies(u.uid);
         setCustomPolicies(saved);
       } else {
-        setCustomPolicies([]);
+        signInAnonymously(auth).catch(console.error);
       }
     });
     return unsub;
@@ -65,7 +63,6 @@ export default function App() {
             onCustomPoliciesChange={setCustomPolicies}
             onAddPolicy={handleAddPolicy}
             onDeletePolicy={handleDeletePolicy}
-            user={user}
           />
         );
       case 'claims':
@@ -82,7 +79,6 @@ export default function App() {
             onCustomPoliciesChange={setCustomPolicies}
             onAddPolicy={handleAddPolicy}
             onDeletePolicy={handleDeletePolicy}
-            user={user}
           />
         );
     }
@@ -111,13 +107,6 @@ export default function App() {
           />
         )}
       </AnimatePresence>
-
-      {/* Auth button - top right corner */}
-      {!showSplash && (
-        <div className="fixed top-4 right-4 z-40 max-w-md" style={{ right: 'max(1rem, calc(50vw - 224px + 1rem))' }}>
-          <AuthButton user={user} />
-        </div>
-      )}
 
       <Navigation activeTab="home" setActiveTab={setActiveTab} />
     </div>

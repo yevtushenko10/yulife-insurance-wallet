@@ -10,9 +10,11 @@ interface HomeProps {
   onPolicyClick: (policy: Policy) => void;
   customPolicies: Policy[];
   onCustomPoliciesChange: (policies: Policy[]) => void;
+  onAddPolicy?: (policy: Policy) => void;
+  onDeletePolicy?: (id: string) => void;
 }
 
-export function Home({ onPolicyClick, customPolicies, onCustomPoliciesChange }: HomeProps) {
+export function Home({ onPolicyClick, customPolicies, onCustomPoliciesChange, onAddPolicy, onDeletePolicy }: HomeProps) {
   const [showAddModal, setShowAddModal] = useState(false);
   const allPolicies = [...POLICIES, ...customPolicies];
   return (
@@ -107,7 +109,7 @@ export function Home({ onPolicyClick, customPolicies, onCustomPoliciesChange }: 
                 index={index}
                 onClick={() => onPolicyClick(policy)}
                 isStacked={true}
-                onDelete={policy.id.startsWith('custom-') ? () => onCustomPoliciesChange(customPolicies.filter(p => p.id !== policy.id)) : undefined}
+                onDelete={policy.id.startsWith('custom-') ? () => { onDeletePolicy ? onDeletePolicy(policy.id) : onCustomPoliciesChange(customPolicies.filter(p => p.id !== policy.id)); } : undefined}
               />
             ))}
           </div>
@@ -129,7 +131,7 @@ export function Home({ onPolicyClick, customPolicies, onCustomPoliciesChange }: 
         {showAddModal && (
           <AddInsuranceModal
             onClose={() => setShowAddModal(false)}
-            onAdd={(policy) => onCustomPoliciesChange([...customPolicies, policy])}
+            onAdd={(policy) => { onAddPolicy ? onAddPolicy(policy) : onCustomPoliciesChange([...customPolicies, policy]); }}
           />
         )}
       </AnimatePresence>
