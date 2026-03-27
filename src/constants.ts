@@ -80,7 +80,7 @@ export const POLICIES: Policy[] = [
 ];
 
 export const USER_MOCK = {
-  name: 'Oleksandr',
+  name: 'Alex',
   points: 1250,
   level: 5,
   streak: 12,
