@@ -178,7 +178,7 @@ export function Claims({ onBack, customPolicies = [] }: ClaimsProps) {
                       setErrors(prev => ({ ...prev, date: undefined }));
                     }}
                     className={cn(
-                      "w-full p-5 rounded-3xl bg-white border focus:outline-none focus:ring-4 focus:ring-yu-pink/10 font-bold",
+                      "w-full px-5 py-4 rounded-3xl bg-white border focus:outline-none focus:ring-4 focus:ring-yu-pink/10 font-bold text-gray-800",
                       errors.date ? "border-red-400 ring-2 ring-red-200" : "border-gray-100"
                     )}
                   />
